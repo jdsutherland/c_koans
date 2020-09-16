@@ -19,16 +19,16 @@ Test(about_strings, what_is_string)
     */
 
     /* Change this to: 'cr_assert_not_null' */
-    cr_assert_null(
+    cr_assert_not_null(
         string, "string contains value which is the address of first\
      character");
 
     /* Change it to 'C' */
     cr_assert_eq(
-        'c', *string, "Dereferencing will give the first character of \
+        'C', *string, "Dereferencing will give the first character of \
         the string");
 
-    cr_assert_eq('s', *(string + 1), "Dereferencing with offset will give \
+    cr_assert_eq('S', *(string + 1), "Dereferencing with offset will give \
         character at offset");
 }
 
@@ -41,21 +41,20 @@ Test(about_strings, reference_characters)
     char *string = "CSE101 is awesome";
 
     /* Change it to 'E', indexing starts with 0 */
-    cr_assert_eq('1', string[2], "String can be used as arrays");
+    cr_assert_eq('E', string[2], "String can be used as arrays");
 
     /*
         Can also add the can use both
         offset and bracket notation at the same time
     */
-    cr_assert_eq(
-        'E', (string + 1)[2], "Gets character at the sum of both numbers");
+    cr_assert_eq('1', (string + 1)[2], "Gets character at the sum of both numbers");
 
     /*
         *string + 1 will get first character and add 1 to the character, while
         *(string + 1) adds 1 to the pointer then
         dereferences it
     */
-    cr_assert_eq(*string + 1, *(string + 1), "They are not equal");
+    cr_assert_eq(*string + 1, 'D', "They are not equal");
 }
 
 Test(about_strings, assignment)
@@ -67,13 +66,13 @@ Test(about_strings, assignment)
     */
     char string[] = "CSE 101";
     string[2] = 'S';
-    cr_assert_str_eq("CSE 101", string, "String declared this way are mutable");
+    cr_assert_str_eq("CSS 101", string, "String declared this way are mutable");
 
     *(string + 4) = '2'; /* forgetting () will give compiling error */
-    cr_assert_str_eq("CSE 101", string, "String declared this way are mutable");
+    cr_assert_str_eq("CSS 201", string, "String declared this way are mutable");
 
     (string + 4)[2] = '2';
-    cr_assert_str_eq("CSE 101", string, "String declared this way are mutable");
+    cr_assert_str_eq("CSS 202", string, "String declared this way are mutable");
 }
 
 Test(about_strings, declaration)
@@ -83,7 +82,7 @@ Test(about_strings, declaration)
     char string2[] = "CSE101"; /* Adds terminating character at the end */
 
     cr_assert_eq(
-        sizeof(string1), sizeof(string2), "Only one of them contains \\\
+        sizeof(string1) + 1, sizeof(string2), "Only one of them contains \\\
         0 at the end");
 }
 
@@ -96,14 +95,14 @@ Test(about_strings, sizeof_strlen)
 
     /* For function calls in strings.h strings end at /0 */
     char string[] = { 'C', 'S', 'E', '\0', '1', '0', '1' };
-    cr_assert_eq(sizeof(string), strlen(string), "strlen ends counting at \\0");
+    cr_assert_eq(3, strlen(string), "strlen ends counting at \\0");
 
     char *string2 = "Some String";
     char string3[10] = "CSE 101";
 
-    cr_assert_eq(TODO, sizeof(string2), "sizeof string2 only shows size of the \
+    cr_assert_eq(8, sizeof(string2), "sizeof string2 only shows size of the \
         char pointer");
-    cr_assert_eq(TODO, sizeof(string3), "sizeof string3 shows memory used by \
+    cr_assert_eq(10, sizeof(string3), "sizeof string3 shows memory used by \
         string3 array not string size");
 }
 
@@ -117,7 +116,7 @@ Test(about_strings, copy)
     string1[4] = '2'; /* string1 = CSE 201 */
 
     cr_assert_str_eq(
-        "CSE 101", string2, "Only copied pointer, did not copy the\
+        "CSE 201", string2, "Only copied pointer, did not copy the\
      string");
 
     /* Correct way to copy string */
@@ -125,14 +124,14 @@ Test(about_strings, copy)
     strcpy(string3, string1); /* copy all characters */
 
     /* Replace with cr_assert_str_eq */
-    cr_assert_eq("CSE 101", string2, "Only copied pointer, did not copy the \
+    cr_assert_str_eq("CSE 201", string2, "Only copied pointer, did not copy the \
         string");
 }
 
 void test_a_string_length_with_sizeof(char *string)
 {
     /* Sizeof(string) is 8 because the size of pointer is 8 */
-    cr_assert_eq(TODO, sizeof(string), "That same string gives a different size \
+    cr_assert_eq(8, sizeof(string), "That same string gives a different size \
         when passed into this function, always use strlen function");
 }
 
@@ -153,7 +152,7 @@ Test(about_strings, formating_strings)
     char *string1 = malloc(12);
     sprintf(string1, "%s %s!", "CSE", "101!");
 
-    cr_assert_str_eq("CSE 102!", string1, "Instead of printing to stdout we \
+    cr_assert_str_eq("CSE 101!!", string1, "Instead of printing to stdout we \
         print it to string1");
     free(string1);
 }
