@@ -1,4 +1,5 @@
 #include "c_koans.h"
+#include <stdlib.h>
 #include <string.h>
 
 Test(about_pointers, pointers_and_addresses)
@@ -19,15 +20,15 @@ Test(about_pointers, pointers_and_addresses)
     int *jptr = &j;
 
     cr_assert_eq(
-        sizeof(i), TODO, "What is the size of an int on a 64 bit machine?");
-    cr_assert_eq(sizeof(iptr), TODO,
+        sizeof(i), 4, "What is the size of an int on a 64 bit machine?");
+    cr_assert_eq(sizeof(iptr), 8,
         "What is the size of an address on a 64 bit machine?");
 
     /* The '*' operator has another meaning when used not in a declaration to
      * 'dereference' a pointer, and give the value at that address.
     */
 
-    cr_assert_eq(*jptr, TODO, "What is the value that jptr 'points' to?");
+    cr_assert_eq(*jptr, 20, "What is the value that jptr 'points' to?");
 
     /*
      * Multi-variable declarations mixing pointers and the type it points to
@@ -41,10 +42,10 @@ Test(about_pointers, pointers_and_addresses)
     int* m, n;
     /* clang-format on */
 
-    cr_assert_eq(sizeof(k), TODO, "What type is k?");
-    cr_assert_eq(sizeof(l), TODO, "What type is l?");
-    cr_assert_eq(sizeof(m), TODO, "What type is m?");
-    cr_assert_eq(sizeof(n), TODO, "What type is n?");
+    cr_assert_eq(sizeof(k), 4, "What type is k?");
+    cr_assert_eq(sizeof(l), 8, "What type is l?");
+    cr_assert_eq(sizeof(m), 8, "What type is m?");
+    cr_assert_eq(sizeof(n), 4, "What type is n?");
 }
 
 Test(about_pointers, pointers_as_function_arguments)
@@ -58,7 +59,7 @@ Test(about_pointers, pointers_as_function_arguments)
 
     double_an_int(&i);
 
-    cr_assert_eq(i, TODO, "What is the new value of i?");
+    cr_assert_eq(i, 20, "What is the new value of i?");
 }
 
 Test(about_pointers, pointers_arrays_and_arithmetic)
@@ -73,9 +74,9 @@ Test(about_pointers, pointers_arrays_and_arithmetic)
     int *p1 = &a[0];
     int *p2 = &a[1];
 
-    cr_assert_eq(*a, TODO, "Remember what the ");
-    cr_assert_eq(*p1, TODO, "What does p1 point to?");
-    cr_assert_eq(*p2, TODO, "What does p2 point to?");
+    cr_assert_eq(*a, 1, "Remember what the ");
+    cr_assert_eq(*p1, 1, "What does p1 point to?");
+    cr_assert_eq(*p2, 2, "What does p2 point to?");
 
     /*
      * Since p1 now points to the array, we can treat p1 as being the array
@@ -84,20 +85,20 @@ Test(about_pointers, pointers_arrays_and_arithmetic)
      * size of the type that is being pointed to.
     */
 
-    cr_assert_eq(*(p1 + 1), TODO, "What is the value at this address?");
+    cr_assert_eq(*(p1 + 1), 2, "What is the value at this address?");
 
-    cr_assert_eq(p1[1], TODO,
+    cr_assert_eq(p1[1], 2,
         "Bracket notation is just syntactic sugar for pointer arithmetic.");
 
     /*
      * Think about this example, if p1 points to the first int and p2 points to
      * the second int, what is the number of bytes between the two addresses?
     */
-    cr_assert_eq((long)((long)p2 - (long)p1), TODO,
+    cr_assert_eq((long)((long)p2 - (long)p1), 4,
         "What is the number of bytes difference?");
 
     cr_assert_eq(
-        (int)(p2 - p1), TODO, "What is the number of ints difference?");
+        (int)(p2 - p1), 1, "What is the number of ints difference?");
 }
 
 Test(about_pointers, function_pointers)
@@ -154,7 +155,7 @@ Test(about_pointers, function_pointers)
         named string_compare
     */
 
-    /* qsort(); */
+    qsort(names, sizeof(names)/sizeof(names[0]), sizeof(*names), string_compare);
 
     cr_assert_arr_eq_cmp(sorted_names, names, array_size, string_compare,
         "The names are not sorted.");
