@@ -68,6 +68,12 @@ Test(about_malloc, free)
     */
     free(ip);
 
+    /*
+        Since we have just freed ip, it is a good idea to set ip to NULL to
+        show that we are done using it.
+    */
+    ip = NULL;
+
     cr_assert_eq(
         ip, (void *)TODO_NZ, "What is ip now? What would happen if we \
         dereference ip?");
